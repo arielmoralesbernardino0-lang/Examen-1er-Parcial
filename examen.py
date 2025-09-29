@@ -1,11 +1,14 @@
-class abstract Empleado:
+from abc import ABC, abstractmethod
+
+class Empleado(ABC):
     def __init__(self, RFC, apellidos, nombres):
         self.RFC = RFC
         self.apellidos = apellidos
         self.nombres = nombres
         self.sueldoNeto = 0.0
 
-    def actualizarInformacion(self):
+    @abstractmethod
+    def calcularSueldoNeto(self):
         pass
 
     def obtenerRFC(self):
@@ -13,6 +16,8 @@ class abstract Empleado:
 
     def establecerSueldoNeto(self, sueldo):
         self.sueldoNeto = sueldo
+
+
 class EmpleadoVendedor(Empleado):
     def __init__(self, RFC, apellidos, nombres, montoVendido, tasaComision):
         super().__init__(RFC, apellidos, nombres)
@@ -24,10 +29,7 @@ class EmpleadoVendedor(Empleado):
         return self.montoVendido * self.tasaComision
 
     def calcularBonificacion(self):
-        if self.montoVendido > 10000:
-            self.bonificacion = 500
-        else:
-            self.bonificacion = 0
+        self.bonificacion = 500 if self.montoVendido > 10000 else 0
         return self.bonificacion
 
     def calcularDescuento(self):
@@ -38,13 +40,16 @@ class EmpleadoVendedor(Empleado):
             return ingresos * 0.10
         else:
             return ingresos * 0.15
+
     def calcularSueldoNeto(self):
         ingresos = self.calcularIngresos()
         bonificacion = self.calcularBonificacion()
         descuento = self.calcularDescuento()
         self.sueldoNeto = ingresos + bonificacion - descuento
         return self.sueldoNeto
-class EmpleadoPermanente(Empleado):  
+
+
+class EmpleadoPermanente(Empleado):
     def __init__(self, RFC, apellidos, nombres, sueldoBase, numeroSeguroSocial, constructorInfo):
         super().__init__(RFC, apellidos, nombres)
         self.sueldoBase = sueldoBase
@@ -61,7 +66,9 @@ class EmpleadoPermanente(Empleado):
         ingresos = self.calcularIngresos()
         descuento = self.calcularDescuento()
         self.sueldoNeto = ingresos - descuento
-        return self.sueldoNeto 
+        return self.sueldoNeto
+
+
 class PlantaDeEmpleados:
     def __init__(self):
         self.empleados = []
@@ -94,5 +101,7 @@ class PlantaDeEmpleados:
         planta.agregarEmpleado(permanente2)
 
         planta.calcularNominaTotal()
+
+
 if __name__ == "__main__":
-    PlantaDeEmEleados.main()
+    PlantaDeEmpleados.main()
