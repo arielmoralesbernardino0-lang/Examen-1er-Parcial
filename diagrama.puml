@@ -1,0 +1,63 @@
+@startuml
+skinparam ClassAttributeIconStyle private
+title Examen Primer Parcial - Jerarquía de Empleados
+
+' Clase Abstracta Empleado
+abstract class Empleado_A11 {
+    - RFC: String
+    - apellidos: String
+    - nombres: String
+    - sueldoNeto: double
+
+    + Empleado_A11(RFC, apellidos, nombres)
+    + actualizarInformacion(): void
+    + obtenerRFC(): String
+    + establecerSueldoNeto(sueldo: double): void
+
+    + {abstract} calcularIngresos(): double
+    + {abstract} calcularDescuento(): double
+    + {abstract} calcularSueldoNeto(): double
+}
+
+' Clase Hija: Empleado Vendedor
+class EmpleadoVendedor_A11 {
+    - montoVendido: double
+    - tasaComision: double
+    - bonificacion: double
+
+    + EmpleadoVendedor_A11(RFC, apellidos, nombres, montoVendido, tasaComision)
+    + calcularIngresos(): double
+    + calcularBonificacion(): double
+    + calcularDescuento(): double
+    + calcularSueldoNeto(): double
+}
+
+' Clase Hija: Empleado Permanente
+class EmpleadoPermanente_A11 {
+    - sueldoBase: double
+    - numeroSeguroSocial: String
+    - constructorInfo: String
+
+    + EmpleadoPermanente_A11(RFC, apellidos, nombres, sueldoBase, numeroSeguroSocial, constructorInfo)
+    + calcularIngresos(): double
+    + calcularDescuento(): double
+    + calcularSueldoNeto(): double
+}
+
+' Relaciones de Herencia
+Empleado_A11 <|-- EmpleadoVendedor_A11
+Empleado_A11 <|-- EmpleadoPermanente_A11
+
+' Clase para manejar polimorfismo y excepciones
+class PlantaDeEmpleados_A11 {
+    - empleados: List<Empleado_A11>
+
+    + agregarEmpleado(empleado: Empleado_A11): void
+    + calcularNominaTotal(): void
+    + main(): void
+
+    ' Manejo de excepciones
+    + validarSalario(salario: double): void throws SalarioMinimoException
+}
+
+@enduml
